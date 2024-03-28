@@ -67,9 +67,10 @@
         android:layout_marginTop="@dimen/standard_dp"
         android:layout_marginEnd="@dimen/standard_dp"
         android:layout_marginBottom="@dimen/standard_dp"
-        android:text="@string/content"
         app:layout_constraintBottom_toBottomOf="@id/barrier_bottom"
-        app:layout_constraintTop_toBottomOf="@id/barrier_top" />
+        app:layout_constraintTop_toBottomOf="@id/barrier_top"
+        />
+
 
     <androidx.constraintlayout.widget.Barrier
         android:id="@+id/barrier_bottom"
@@ -87,12 +88,12 @@
         app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
         app:srcCompat="@drawable/likes"/>
     <TextView
-        android:id="@+id/likes"
+        android:id="@+id/like"
         android:layout_width="@dimen/not_size"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/standard_dp"
         android:layout_marginStart="@dimen/standard_dp"
-        android:text="@string/likes"
+        android:text="5"
         app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
         app:layout_constraintStart_toEndOf="@id/likes_iv"
         />
@@ -105,7 +106,7 @@
         android:layout_marginTop="@dimen/standard_dp"
         android:layout_marginStart="@dimen/standard_dp"
         app:srcCompat="@drawable/shared"
-        app:layout_constraintStart_toEndOf="@id/likes"
+        app:layout_constraintStart_toEndOf="@id/like"
         app:layout_constraintTop_toBottomOf="@id/barrier_bottom"/>
 
     <TextView
@@ -114,7 +115,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/standard_dp"
         android:layout_marginStart="@dimen/standard_dp"
-        android:text="@string/shared"
+        android:text="5"
         app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
         app:layout_constraintStart_toEndOf="@id/shared_iv"
         />
@@ -136,7 +137,7 @@
         android:layout_width="@dimen/not_size"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/standard_dp"
-        android:text="@string/views"
+        android:text="5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/barrier_bottom"
 
