@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 )
 
                 binding.sharedIv.setOnClickListener {
-                    viewModel.shared((viewModel.data.value?.shared ?: 0) + 10)
+                    viewModel.shared()
 
                 }
 
