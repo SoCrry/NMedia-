@@ -9,18 +9,23 @@ import ru.netology.nmedia.Post
 import ru.netology.nmedia.service.NumberServices
 
 typealias OnLikeListener = (post: Post) -> Unit
+typealias OnSharedListener = (post: Post) -> Unit
 
-class PostsAdapter(private val onLikeListener: OnLikeListener): RecyclerView.Adapter<PostViewHolder>() {
+class PostsAdapter(
+    private val onLikeListener: OnLikeListener,
+    private val onSharedListener: OnSharedListener
+) : RecyclerView.Adapter<PostViewHolder>() {
+
     var list = emptyList<Post>()
         set(value) {
             field = value
             notifyDataSetChanged()
         }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostViewHolder {
         val binding = CardPostBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return PostViewHolder(binding, onLikeListener)
+        return PostViewHolder(binding, onLikeListener, onSharedListener)
     }
-
 
 
     override fun getItemCount(): Int = list.size
@@ -35,17 +40,16 @@ class PostsAdapter(private val onLikeListener: OnLikeListener): RecyclerView.Ada
 class PostViewHolder(
     private val binding: CardPostBinding,
     private val onLikeListener: OnLikeListener,
+    private val onSharedListener: OnSharedListener
 ) : RecyclerView.ViewHolder(binding.root) {
-    val services= NumberServices()
-
     fun bind(post: Post) {
         binding.apply {
             author.text = post.author
             timePublication.text = post.published
-            content.text =  post.content
+            content.text = post.content
 
-            like.text= NumberServices().countWithSuffix(post.like)
-            shared.text= NumberServices().countWithSuffix(post.shared)
+            like.text = NumberServices().countWithSuffix(post.like)
+            shared.text = NumberServices().countWithSuffix(post.shared)
             viewers.text = NumberServices().countWithSuffix(post.views)
 
             likesIv.setImageResource(
@@ -54,8 +58,9 @@ class PostViewHolder(
             likesIv.setOnClickListener {
                 onLikeListener(post)
             }
-           /* sharedIv.setOnClickListener{
-            }*/
+            sharedIv.setOnClickListener {
+                onSharedListener(post)
+            }
         }
     }
 }

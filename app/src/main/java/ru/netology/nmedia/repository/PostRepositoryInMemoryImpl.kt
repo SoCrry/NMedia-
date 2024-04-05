@@ -94,7 +94,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
         data.value = posts
     }
 
-    override fun sharedById(id: Long, shared: Int) {
+    override fun sharedById(id: Long) {
         posts = posts.map {
             if (it.id != id) it else it.copy(shared = it.shared + 10)
         }
