@@ -25,7 +25,6 @@
         android:layout_marginEnd="@dimen/standard_dp"
         android:ellipsize="end"
         android:lines="1"
-        android:text="@string/name_author"
         app:layout_constraintEnd_toStartOf="@id/menu"
         app:layout_constraintStart_toEndOf="@+id/avatar"
         app:layout_constraintTop_toTopOf="@+id/avatar" />
@@ -36,7 +35,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/standard_dp"
         android:layout_marginEnd="@dimen/standard_dp"
-        android:text="@string/time_publication"
         app:layout_constraintBottom_toBottomOf="@+id/avatar"
         app:layout_constraintEnd_toEndOf="@+id/author"
         app:layout_constraintEnd_toStartOf="@id/menu"
