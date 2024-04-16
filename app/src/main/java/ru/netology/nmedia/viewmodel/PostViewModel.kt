@@ -35,13 +35,16 @@ class PostViewModel : ViewModel() {
     fun edit(post: Post) {
         edited.value = post
     }
+    fun setEmptyPost() {
+        edited.value = empty
+    }
 
     fun changeContent(content: String) {
         val text = content.trim()
         if (edited.value?.content == text) {
             return
         }
-        edited.value = edited.value?.copy(content = content)
+        edited.value = edited.value?.copy(content = text)
     }
 
     fun likeById(id: Long) = repository.likeById(id)

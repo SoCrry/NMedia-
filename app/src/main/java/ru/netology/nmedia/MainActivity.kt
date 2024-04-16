@@ -52,9 +52,9 @@ class MainActivity : AppCompatActivity() {
                 return@observe
             }
             binding.editContent.text = post.content
-            binding.group.visibility = View.VISIBLE
-            with(binding.content) {
 
+            with(binding.content) {
+                binding.group.visibility = View.VISIBLE
                 focusAndShowKeyboard()
                 setText(post.content)
             }
@@ -69,6 +69,7 @@ class MainActivity : AppCompatActivity() {
                 setText("")
                 clearFocus()
                 AndroidUtils.hideKeyboard(this)
+                viewModel.setEmptyPost()
 
             }
         }
@@ -82,7 +83,7 @@ class MainActivity : AppCompatActivity() {
                     ).show()
                     return@setOnClickListener
                 }
-
+                binding.group.visibility = View.GONE
                 viewModel.changeContent(text.toString())
                 viewModel.save()
 
