@@ -3,4 +3,7 @@
     <dimen name="standard_dp">16dp</dimen>
     <dimen name="avatar_dp">48dp</dimen>
     <dimen name="not_size">0dp</dimen>
+    <dimen name="checkbox_padding_start">8dp</dimen>
+    <dimen name="icon_button_padding">12dp</dimen>
+    <dimen name="icon_button_min_size">48dp</dimen>
 </resources>

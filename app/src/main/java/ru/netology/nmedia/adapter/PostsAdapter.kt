@@ -45,16 +45,14 @@ class PostViewHolder(
             content.text = post.content
 
             like.text = NumberServices().countWithSuffix(post.like)
-            shared.text = NumberServices().countWithSuffix(post.shared)
+            share.text = NumberServices().countWithSuffix(post.shared)
             viewers.text = NumberServices().countWithSuffix(post.views)
+            like.isChecked = post.likeByMe
 
-            likesIv.setImageResource(
-                if (post.likeByMe) R.drawable.liked else R.drawable.likes
-            )
-            likesIv.setOnClickListener {
+            like.setOnClickListener {
                 onInteractionListener.onLike(post)
             }
-            sharedIv.setOnClickListener {
+            share.setOnClickListener {
                 onInteractionListener.onShared(post)
             }
             menu.setOnClickListener {
