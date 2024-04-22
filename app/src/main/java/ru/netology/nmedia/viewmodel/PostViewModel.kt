@@ -1,5 +1,7 @@
 package ru.netology.nmedia.viewmodel
 
+import android.content.Intent
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.netology.nmedia.Post
@@ -25,9 +27,12 @@ class PostViewModel : ViewModel() {
     val data = repository.getAll()
     val edited = MutableLiveData(empty)
 
-    fun save() {
+    fun changeContentAndSave(content: String) {
         edited.value?.let {
-            repository.save(it)
+            val text = content.trim()
+            if (it.content != text.trim()) {
+                repository.save(it.copy(content = text))
+            }
         }
         edited.value = empty
     }
@@ -40,16 +45,16 @@ class PostViewModel : ViewModel() {
         edited.value = empty
     }
 
-    fun changeContent(content: String) {
-        val text = content.trim()
-        if (edited.value?.content == text) {
-            return
+    fun prepareVideoIntent(post: Post): Intent {
+        val intent = Intent().apply {
+            action = Intent.ACTION_VIEW
+            type = "audio/*"
+            data = Uri.parse(post.urlVideo)
         }
-        edited.value = edited.value?.copy(content = text)
+        return Intent.createChooser(intent, "video")
     }
 
     fun likeById(id: Long) = repository.likeById(id)
-    fun sharedById(id: Long) = repository.sharedById(id)
     fun removeById(id: Long) = repository.removeById(id)
 
 

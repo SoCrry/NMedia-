@@ -6,4 +6,5 @@
     <string name="post_text">текст поста</string>
     <string name="menu_edit">редактировать</string>
     <string name="error_empty_content">текст поста не может быть пустым</string>
+    <string name="editing">Редактирование</string>
 </resources>

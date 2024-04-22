@@ -14,7 +14,11 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Освоение новой профессии — это не только открывающиеся возможности и перспективы, но и настоящий вызов самому себе. Приходится выходить из зоны комфорта и перестраивать привычный образ жизни: менять распорядок дня, искать время для занятий, быть готовым к возможным неудачам в начале пути. В блоге рассказали, как избежать стресса на курсах профпереподготовки → http://netolo.gy/fPD",
             published = "23 сентября в 10:12",
             likeByMe = false,
-            15, 100, 200
+            15,
+            100,
+            200,
+            visibilityCount = 1000,
+            urlVideo = "https://www.youtube.com/watch?v=JAJs2Ro_MZo"
         ),
         Post(
             id = nextId++,
@@ -70,7 +74,11 @@ class PostRepositoryInMemoryImpl : PostRepository {
             content = "Знаний хватит на всех: на следующей неделе разбираемся с разработкой мобильных приложений, учимся рассказывать истории и составлять PR-стратегию прямо на бесплатных занятиях \uD83D\uDC47",
             published = "18 сентября в 10:12",
             likeByMe = false,
-            1500, 100, 200
+            1500,
+            100,
+            200,
+            visibilityCount = 1000,
+            urlVideo = "https://www.youtube.com/watch?v=JAJs2Ro_MZo"
         ),
         Post(
             id = nextId++,

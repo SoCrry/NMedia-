@@ -64,8 +64,35 @@
         android:layout_marginTop="@dimen/standard_dp"
         android:layout_marginEnd="@dimen/standard_dp"
         android:layout_marginBottom="@dimen/standard_dp"
-        app:layout_constraintBottom_toBottomOf="@id/barrier_bottom"
+        app:layout_constraintBottom_toTopOf="@id/previewVideoImage"
         app:layout_constraintTop_toBottomOf="@id/barrier_top" />
+    <ImageView
+        android:id="@+id/previewVideoImage"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/horizontal"
+        android:scaleType="centerCrop"
+        android:src="@drawable/cat"
+        app:layout_constraintTop_toBottomOf="@id/content"
+        app:layout_constraintBottom_toTopOf="@id/barrier_bottom"/>
+
+    <ImageButton
+        android:id="@+id/playVideo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:src="@drawable/playvideo"
+        app:layout_constraintBottom_toBottomOf="@id/previewVideoImage"
+        app:layout_constraintEnd_toEndOf="@id/previewVideoImage"
+        app:layout_constraintStart_toStartOf="@id/previewVideoImage"
+        app:layout_constraintTop_toTopOf="@id/previewVideoImage" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/videoGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="previewVideoImage,playVideo" />
+
 
 
     <androidx.constraintlayout.widget.Barrier

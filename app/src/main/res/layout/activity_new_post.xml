@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.NewPostActivity">
+
+    <EditText
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top"
+        android:hint="@string/post_text"
+        android:inputType="textMultiLine"
+        android:background="@android:color/transparent"
+        android:padding="@dimen/standard_dp"
+        android:importantForAutofill="no"
+
+        />
+
+    <com.google.android.material.bottomappbar.BottomAppBar
+        android:id="@+id/bottomAppBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        style="@style/Widget.MaterialComponents.BottomAppBar.Colored"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/ic_add_24dp"
+        app:layout_anchor="@id/bottomAppBar"
+        />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/standard_dp"
+        android:elevation="@dimen/not_size"
+        app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchorGravity="right|center"
+        app:srcCompat="@drawable/close"
+        />
+    <TextView
+        android:id="@+id/titleEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/editing"
+        android:layout_marginTop="@dimen/text_24dp"
+        android:singleLine="true"
+        app:layout_anchor="@id/bottomAppBar"
+        app:layout_anchorGravity="bottom|center"
+        android:textColor="@color/teal_200"
+        android:textStyle="bold"
+        android:textSize="@dimen/text_24dp"
+        android:visibility="gone"
+
+        tools:ignore="SpUsage" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
