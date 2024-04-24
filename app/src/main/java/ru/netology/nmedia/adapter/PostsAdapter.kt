@@ -45,7 +45,7 @@ class PostViewHolder(
             author.text = post.author
             timePublication.text = post.published
             content.text = post.content
-            if (post.urlVideo != null) {
+            if (!post.urlVideo.isNullOrBlank()) {
                 videoGroup.visibility = View.VISIBLE
             }
             like.text = NumberServices().countWithSuffix(post.like)

@@ -44,18 +44,10 @@ class PostViewModel : ViewModel() {
     fun setEmptyPost() {
         edited.value = empty
     }
-
-    fun prepareVideoIntent(post: Post): Intent {
-        val intent = Intent().apply {
-            action = Intent.ACTION_VIEW
-            type = "audio/*"
-            data = Uri.parse(post.urlVideo)
-        }
-        return Intent.createChooser(intent, "video")
-    }
-
     fun likeById(id: Long) = repository.likeById(id)
     fun removeById(id: Long) = repository.removeById(id)
-
+    fun getVideoUri(post: Post): Uri {
+        return Uri.parse(post.urlVideo)
+    }
 
 }
