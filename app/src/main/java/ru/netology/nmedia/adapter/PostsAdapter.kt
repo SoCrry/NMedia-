@@ -47,6 +47,8 @@ class PostViewHolder(
             content.text = post.content
             if (!post.urlVideo.isNullOrBlank()) {
                 videoGroup.visibility = View.VISIBLE
+            }else{
+                videoGroup.visibility= View.GONE
             }
             like.text = NumberServices().countWithSuffix(post.like)
             share.text = NumberServices().countWithSuffix(post.shared)
