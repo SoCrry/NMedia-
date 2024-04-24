@@ -53,7 +53,8 @@ class MainActivity : AppCompatActivity() {
             override fun onPlay(post: Post) {
                 val videoUri = viewModel.getVideoUri(post)
                 val intent = Intent(Intent.ACTION_VIEW).apply {
-                    setDataAndType(videoUri,"video/*")
+                    type="video/*"
+                    data=videoUri
                 }
                 startActivity(Intent.createChooser(intent, "video"))
             }

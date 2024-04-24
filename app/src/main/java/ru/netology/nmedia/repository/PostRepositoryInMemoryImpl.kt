@@ -18,7 +18,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             100,
             200,
             visibilityCount = 1000,
-            urlVideo = "https://www.youtube.com/watch?v=JAJs2Ro_MZo"
+            urlVideo = "https://www.youtube.com/watch?v=MOEtQSswu3s"
         ),
         Post(
             id = nextId++,
@@ -78,7 +78,7 @@ class PostRepositoryInMemoryImpl : PostRepository {
             100,
             200,
             visibilityCount = 1000,
-            urlVideo = "https://www.youtube.com/watch?v=JAJs2Ro_MZo"
+            urlVideo = "https://www.youtube.com/watch?v=MOEtQSswu3s"
         ),
         Post(
             id = nextId++,
