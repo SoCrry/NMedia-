@@ -117,7 +117,7 @@ class PostRepositoryFileImpl (
 
             } else {
                 posts = defaultPosts
-                nextId= posts.maxOfOrNull { it.id } ?: 1
+                nextId= defaultPosts.maxOfOrNull { it.id } ?: + 1
 
             }
             data.value = posts
