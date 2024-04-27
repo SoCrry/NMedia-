@@ -112,12 +112,12 @@ class PostRepositoryFileImpl (
            if (file.exists()) {
                 context.openFileInput(FILENAME).bufferedReader().use {
                     posts = gson.fromJson(it,typeToken)
-                        nextId= posts.maxOf { it.id }+1
+                        nextId= posts.maxOfOrNull { it.id }?:1
                 }
 
             } else {
                 posts = defaultPosts
-                nextId= defaultPosts.maxOfOrNull { it.id } ?: + 1
+                nextId= (posts.maxOfOrNull { it.id } ?: 0) + 1
 
             }
             data.value = posts
