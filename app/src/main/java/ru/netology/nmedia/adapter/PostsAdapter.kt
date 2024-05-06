@@ -18,6 +18,7 @@ interface OnInteractionListener {
     fun onRemove(post: Post) {}
     fun onShare(post: Post) {}
     fun onPlay(post: Post) {}
+    fun onCardPost(post: Post) {}
 
 }
 
@@ -47,8 +48,10 @@ class PostViewHolder(
             content.text = post.content
             if (!post.urlVideo.isNullOrBlank()) {
                 videoGroup.visibility = View.VISIBLE
+                content.visibility = View.VISIBLE
             }else{
                 videoGroup.visibility= View.GONE
+                content.visibility = View.VISIBLE
             }
             like.text = NumberServices().countWithSuffix(post.like)
             share.text = NumberServices().countWithSuffix(post.shared)
@@ -67,6 +70,9 @@ class PostViewHolder(
 
             playVideo.setOnClickListener {
                 onInteractionListener.onPlay(post)
+            }
+           content.setOnClickListener {
+                onInteractionListener.onCardPost(post)
             }
             menu.setOnClickListener {
                 PopupMenu(it.context, it).apply {
