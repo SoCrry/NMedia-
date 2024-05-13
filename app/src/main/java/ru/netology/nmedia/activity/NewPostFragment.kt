@@ -39,11 +39,12 @@ class NewPostFragment : Fragment() {
         )
         binding.content.focusAndShowKeyboard()
         arguments?.textArg
-            ?.let{
-                    val text = it
-                    binding.content.setText(text)
-                    binding.titleEdit.visibility = View.VISIBLE
-                }
+            ?.let {
+                val text = it
+                binding.content.setText(text)
+                binding.titleEdit.visibility = View.VISIBLE
+            }
+
         viewModel.setEmptyPost()
         binding.save.setOnClickListener {
             viewModel.changeContentAndSave(binding.content.text.toString())
@@ -56,7 +57,7 @@ class NewPostFragment : Fragment() {
             viewModel.setEmptyPost()
             findNavController().navigateUp()
         }
-       return binding.root
+        return binding.root
     }
 }
 

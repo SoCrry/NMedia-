@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import ru.netology.nmedia.Post
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
@@ -17,10 +17,11 @@ import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.util.LongArg
 import ru.netology.nmedia.viewmodel.PostViewModel
 
-class PostFragment: Fragment() {
+class PostFragment : Fragment() {
     companion object {
         var Bundle.idArg: Long by LongArg
     }
+
     private val postViewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
@@ -73,11 +74,12 @@ class PostFragment: Fragment() {
                 override fun onPlay(post: Post) {
                     val videoUri = postViewModel.getVideoUri(post)
                     val intent = Intent(Intent.ACTION_VIEW).apply {
-                        type="video/*"
-                        data=videoUri
+                        type = "video/*"
+                        data = videoUri
                     }
                     startActivity(Intent.createChooser(intent, "video"))
                 }
+
                 override fun onCardPost(post: Post) {
                 }
 
@@ -85,6 +87,6 @@ class PostFragment: Fragment() {
             viewHolder.bind(post)
         }
         return binding.root
-}
+    }
 
 }

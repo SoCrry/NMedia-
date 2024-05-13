@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
-import ru.netology.nmedia.Post
+import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.service.NumberServices
 
 interface OnInteractionListener {
@@ -49,8 +49,8 @@ class PostViewHolder(
             if (!post.urlVideo.isNullOrBlank()) {
                 videoGroup.visibility = View.VISIBLE
                 content.visibility = View.VISIBLE
-            }else{
-                videoGroup.visibility= View.GONE
+            } else {
+                videoGroup.visibility = View.GONE
                 content.visibility = View.VISIBLE
             }
             like.text = NumberServices().countWithSuffix(post.like)
@@ -71,7 +71,7 @@ class PostViewHolder(
             playVideo.setOnClickListener {
                 onInteractionListener.onPlay(post)
             }
-           content.setOnClickListener {
+            content.setOnClickListener {
                 onInteractionListener.onCardPost(post)
             }
             menu.setOnClickListener {

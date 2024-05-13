@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import ru.netology.nmedia.Post
+import ru.netology.nmedia.dto.Post
 
 class PostRepositorySharedPrefsImpl(
     context: Context
@@ -107,10 +107,10 @@ class PostRepositorySharedPrefsImpl(
     init {
         prefs.getString(KEY, null)?.let {
             posts = gson.fromJson(it, typeToken)
-nextId= posts.maxOf { it.id }+1
+            nextId = posts.maxOf { it.id } + 1
         } ?: run {
             posts = defaultPosts
-            nextId= posts.maxOfOrNull { it.id } ?: 1
+            nextId = posts.maxOfOrNull { it.id } ?: 1
             sync()
         }
         data.value = posts
