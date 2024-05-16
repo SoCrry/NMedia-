@@ -13,8 +13,8 @@ data class PostEntity(
     val published: String,
     val likedByMe: Boolean,
     val likes: Int = 0,
-    val shared: Int,
-    val views: Int,
+    val shared: Int = 0,
+    val views: Int = 0,
     val visibilityCount: Int = 0,
     val urlVideo: String? = null
 ) {
