@@ -37,6 +37,7 @@ class NewPostFragment : Fragment() {
             container,
             false
         )
+
         binding.content.focusAndShowKeyboard()
         arguments?.textArg
             ?.let {
@@ -45,7 +46,6 @@ class NewPostFragment : Fragment() {
                 binding.titleEdit.visibility = View.VISIBLE
             }
 
-        viewModel.setEmptyPost()
         binding.save.setOnClickListener {
             viewModel.changeContentAndSave(binding.content.text.toString())
             AndroidUtils.hideKeyboard(requireView())
@@ -57,8 +57,10 @@ class NewPostFragment : Fragment() {
             viewModel.setEmptyPost()
             findNavController().navigateUp()
         }
+
         return binding.root
     }
+
 }
 
 object NewPostContract : ActivityResultContract<String?, String?>() {

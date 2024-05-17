@@ -15,6 +15,7 @@ import ru.netology.nmedia.activity.PostFragment.Companion.idArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
+import ru.netology.nmedia.util.AndroidUtils
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -54,7 +55,7 @@ class FeedFragment : Fragment() {
                     type = "text/plain"
                     putExtra(Intent.EXTRA_TEXT, post.content)
                 }
-
+                viewModel.sharedById(post.id)
                 val shareIntent = Intent.createChooser(intent, "Share Post")
                 startActivity(shareIntent)
             }
