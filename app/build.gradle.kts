@@ -2,7 +2,9 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp") version "1.9.24-1.0.20"
+    id ("com.google.gms.google-services")
 }
+
 
 android {
     namespace = "ru.netology.nmedia"
@@ -61,6 +63,9 @@ dependencies {
     annotationProcessor("com.google.dagger:dagger-compiler:2.51.1")
     ksp("com.google.dagger:dagger-compiler:2.51.1")
     ksp("androidx.room:room-compiler:2.6.1")
+    implementation (platform("com.google.firebase:firebase-bom:33.0.0"))
+    implementation ("com.google.firebase:firebase-messaging-ktx")
+    implementation ("com.google.android.gms:play-services-base:18.4.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
