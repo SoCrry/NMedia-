@@ -53,7 +53,7 @@ class PostViewHolder(
                 videoGroup.visibility = View.GONE
                 content.visibility = View.VISIBLE
             }
-            like.text = NumberServices().countWithSuffix(post.like)
+            like.text = NumberServices().countWithSuffix(post.likes)
             share.text = NumberServices().countWithSuffix(post.shared)
             viewers.text = NumberServices().countWithSuffix(post.views)
             like.isChecked = post.likedByMe
