@@ -1,3 +1,4 @@
+/*
 package ru.netology.nmedia.activity
 
 import android.content.Intent
@@ -89,4 +90,4 @@ class PostFragment : Fragment() {
         return binding.root
     }
 
-}
+}*/

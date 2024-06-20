@@ -35,8 +35,8 @@ import ru.netology.nmedia.dto.Post
         dao.likeById(id)
         posts = posts.map {
             if (it.id != id) it else it.copy(
-                likeByMe = !it.likeByMe,
-                like = if (it.likeByMe) it.like - 1 else it.like + 1
+                likedByMe = !it.likedByMe,
+                like = if (it.likedByMe) it.like - 1 else it.like + 1
             )
         }
         data.value = posts

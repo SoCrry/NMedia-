@@ -1,3 +1,4 @@
+/*
 package ru.netology.nmedia.repository
 
 import android.content.Context
@@ -175,3 +176,4 @@ class PostRepositoryFileImpl(
     }
 
 }
+*/

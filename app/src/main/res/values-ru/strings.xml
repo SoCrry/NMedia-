@@ -12,4 +12,7 @@
     <string name="channel_remote_description">Уведомления с удалённого сервера</string>
     <string name="notification_user_liked">%1$s поставил лайк посту %2$s</string>
     <string name="notification_user_new_post">%1$s опубликовал новый пост</string>
+    <string name="empty_posts">Посты отсутствуют</string>
+    <string name="retry_loading">Повторить загрузку</string>
+    <string name="error_loading">Ошибка загрузки</string>
 </resources>

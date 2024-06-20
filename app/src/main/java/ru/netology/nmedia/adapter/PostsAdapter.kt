@@ -56,7 +56,7 @@ class PostViewHolder(
             like.text = NumberServices().countWithSuffix(post.like)
             share.text = NumberServices().countWithSuffix(post.shared)
             viewers.text = NumberServices().countWithSuffix(post.views)
-            like.isChecked = post.likeByMe
+            like.isChecked = post.likedByMe
 
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
