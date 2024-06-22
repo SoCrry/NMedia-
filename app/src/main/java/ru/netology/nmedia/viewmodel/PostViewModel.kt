@@ -72,7 +72,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun edit(post: Post) {
-        edited.postValue(post)
+       thread{
+           edited.postValue(post)
+       }
 
     }
 
@@ -83,21 +85,40 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun likeById(id: Long) {
         thread {
-            repository.likeById(id)
-            loadPosts()
+            val likedPost = repository.likeById(id)
+            _data.postValue(
+                FeedModel(
+                    posts=_data.value?.posts.orEmpty().map { if (it.id == id) likedPost else it })
+            )
         }
     }
 
-    fun unLikeById(id: Long){
+    fun unLikeById(id: Long) {
 
         thread {
-            repository.unLikeById(id)
-            loadPosts()
+            val likedPost = repository.unLikeById(id)
+            _data.postValue(
+                FeedModel(
+                    posts = _data.value?.posts.orEmpty().map { if (it.id == id) likedPost else it })
+            )
         }
     }
 
     fun removeById(id: Long) {
-        thread {repository.unLikeById(id)}
+        thread {
+            // Оптимистичная модель
+            val old = _data.value?.posts.orEmpty()
+            _data.postValue(
+                _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                    .filter { it.id != id }
+                )
+            )
+            try {
+                repository.removeById(id)
+            } catch (e: IOException) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+        }
     }
 
     fun getVideoUri(post: Post): Uri {
