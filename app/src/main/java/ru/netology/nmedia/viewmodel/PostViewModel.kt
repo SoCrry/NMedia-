@@ -36,31 +36,36 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
+    val old = _data.value?.posts.orEmpty()
 
     init {
         loadPosts()
     }
 
     fun loadPosts() {
-        thread {
-            _data.postValue(FeedModel(loading = true))
-            try {
-                val posts = repository.getAll()
-                FeedModel(posts = posts, empty = posts.isEmpty())
-            } catch (e: IOException) {
+        _data.value = FeedModel(loading = true)
+        repository.getAllAsync(object : PostRepository.NMediaCallback<List<Post>> {
+            override fun onSuccess(posts: List<Post>) {
+                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
+            }
 
-                FeedModel(error = true)
-            }.also(_data::postValue)
-        }
+            override fun onError(e: Exception) {
+                _data.postValue(FeedModel(error = true))
+            }
+        })
     }
     fun save() {
         edited.value?.let {
-            thread {
-                repository.save(it)
-                _postCreated.postValue(Unit)
-            }
+            repository.save(it, object  : PostRepository.NMediaCallback<Post>{
+                override fun onSuccess(posts: Post) {
+                    _postCreated.postValue(Unit)
+                }
+                override fun onError(e: Exception) {
+                    _data.postValue(_data.value?.copy(posts = old))
+                }
+            })
         }
-        edited.postValue(empty)
+        edited.value = empty
     }
 
     fun changeContent(content: String) {
@@ -84,41 +89,53 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun sharedById(id: Long) = repository.sharedById(id)
 
     fun likeById(id: Long) {
-        thread {
-            val likedPost = repository.likeById(id)
-            _data.postValue(
-                FeedModel(
-                    posts=_data.value?.posts.orEmpty().map { if (it.id == id) likedPost else it })
-            )
-        }
+        repository.likeById(id, object : PostRepository.NMediaCallback<Post> {
+            override fun onError(e: Exception) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
+
+            override fun onSuccess(posts: Post) {
+                _data.postValue(
+                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                        .map {
+                            if (it.id == id) posts else it
+                        }
+                    )
+                )
+            }
+        })
     }
 
     fun unLikeById(id: Long) {
+        repository.unLikeById(id, object : PostRepository.NMediaCallback<Post> {
+            override fun onError(e: Exception) {
+                _data.postValue(_data.value?.copy(posts = old))
+            }
 
-        thread {
-            val likedPost = repository.unLikeById(id)
-            _data.postValue(
-                FeedModel(
-                    posts = _data.value?.posts.orEmpty().map { if (it.id == id) likedPost else it })
-            )
-        }
+            override fun onSuccess(posts: Post) {
+                _data.postValue(
+                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
+                        .map {
+                            if (it.id == id) posts else it
+                        }
+                    )
+                )
+            }
+        })
     }
 
     fun removeById(id: Long) {
-        thread {
-            // Оптимистичная модель
-            val old = _data.value?.posts.orEmpty()
-            _data.postValue(
-                _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                    .filter { it.id != id }
-                )
-            )
-            try {
-                repository.removeById(id)
-            } catch (e: IOException) {
+        _data.value = _data.value?.copy(posts = _data.value?.posts.orEmpty()
+            .filter { it.id != id }
+        )
+        repository.removeById(id, object : PostRepository.NMediaCallback<Any> {
+            override fun onSuccess(data: Any) {
+            }
+
+            override fun onError(e: Exception) {
                 _data.postValue(_data.value?.copy(posts = old))
             }
-        }
+        })
     }
 
     fun getVideoUri(post: Post): Uri {
