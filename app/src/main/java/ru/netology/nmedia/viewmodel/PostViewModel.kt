@@ -128,8 +128,8 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
         _data.value = _data.value?.copy(posts = _data.value?.posts.orEmpty()
             .filter { it.id != id }
         )
-        repository.removeById(id, object : PostRepository.NMediaCallback<Any> {
-            override fun onSuccess(data: Any) {
+        repository.removeById(id, object : PostRepository.NMediaCallback<Unit> {
+            override fun onSuccess(data: Unit) {
             }
 
             override fun onError(e: Exception) {
@@ -140,6 +140,9 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getVideoUri(post: Post): Uri {
         return Uri.parse(post.urlVideo)
+    }
+    fun getAvatarUrl(fileName: String) {
+        repository.getAvatarUrl(fileName)
     }
 
 }

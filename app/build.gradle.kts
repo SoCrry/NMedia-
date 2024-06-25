@@ -70,12 +70,13 @@ dependencies {
     annotationProcessor("com.google.dagger:dagger-compiler:2.51.1")
     ksp("com.google.dagger:dagger-compiler:2.51.1")
     ksp("androidx.room:room-compiler:2.6.1")
-    implementation (platform("com.google.firebase:firebase-bom:33.1.0"))
+    implementation (platform("com.google.firebase:firebase-bom:33.1.1"))
     implementation ("com.google.firebase:firebase-messaging-ktx")
     implementation ("com.google.android.gms:play-services-base:18.5.0")
     implementation ("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("com.github.bumptech.glide:glide:4.15.1")
 
     testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test.ext:junit:1.2.0")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0")
 }

@@ -91,6 +91,10 @@ class PostRepositoryImpl: PostRepository {
             })
     }
 
+    override fun getAvatarUrl(fileName: String): String {
+        return "${BASE_URL}/avatars/$fileName"
+    }
+
     override fun save(post: Post, callback: PostRepository.NMediaCallback<Post>) {
         val request: Request = Request.Builder()
             .post(gson.toJson(post).toRequestBody(jsonType))
@@ -116,7 +120,7 @@ class PostRepositoryImpl: PostRepository {
     }
 
 
-    override fun removeById(id: Long, callback: PostRepository.NMediaCallback<Any>) {
+    override fun removeById(id: Long, callback: PostRepository.NMediaCallback<Unit>) {
         val request: Request = Request.Builder()
             .delete()
             .url("${BASE_URL}/api/slow/posts/$id")
@@ -129,7 +133,7 @@ class PostRepositoryImpl: PostRepository {
                         throw RuntimeException("body is null")
                     }
                     try {
-                        callback.onSuccess(Any())
+                        callback.onSuccess(Unit)
                     } catch (e: Exception) {
                         callback.onError(e)
                     }

@@ -11,6 +11,7 @@ import ru.netology.nmedia.R
 import ru.netology.nmedia.databinding.CardPostBinding
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.service.NumberServices
+import ru.netology.nmedia.util.loadAvatar
 
 interface OnInteractionListener {
     fun onLike(post: Post) {}
@@ -57,7 +58,9 @@ class PostViewHolder(
             share.text = NumberServices().countWithSuffix(post.shared)
             viewers.text = NumberServices().countWithSuffix(post.views)
             like.isChecked = post.likedByMe
-
+            if (post.authorAvatar != null) {
+                avatar.loadAvatar(post.authorAvatar)
+            }
             like.setOnClickListener {
                 onInteractionListener.onLike(post)
             }
