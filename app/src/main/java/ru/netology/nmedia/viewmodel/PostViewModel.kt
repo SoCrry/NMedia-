@@ -61,7 +61,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                     _postCreated.postValue(Unit)
                 }
                 override fun onError(e: Exception) {
-                    _data.postValue(_data.value?.copy(posts = old))
+                    _data.postValue(_data.value?.copy(error = true))
                 }
             })
         }
@@ -91,7 +91,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun likeById(id: Long) {
         repository.likeById(id, object : PostRepository.NMediaCallback<Post> {
             override fun onError(e: Exception) {
-                _data.postValue(_data.value?.copy(posts = old))
+                _data.postValue(_data.value?.copy(error = true))
             }
 
             override fun onSuccess(posts: Post) {
@@ -109,7 +109,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun unLikeById(id: Long) {
         repository.unLikeById(id, object : PostRepository.NMediaCallback<Post> {
             override fun onError(e: Exception) {
-                _data.postValue(_data.value?.copy(posts = old))
+                _data.postValue(_data.value?.copy(error = true))
             }
 
             override fun onSuccess(posts: Post) {
@@ -133,7 +133,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
 
             override fun onError(e: Exception) {
-                _data.postValue(_data.value?.copy(posts = old))
+                _data.postValue(_data.value?.copy(error = true))
             }
         })
     }
