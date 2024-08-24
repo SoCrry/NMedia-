@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.R
 import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
@@ -48,7 +49,7 @@ class FeedFragment : Fragment() {
                 viewModel.removeById(post.id)
             }
 
-            override fun onShare(post: Post) {
+            override suspend fun onShare(post: Post) {
                 val intent = Intent().apply {
                     action = Intent.ACTION_SEND
                     type = "text/plain"
@@ -80,15 +81,26 @@ class FeedFragment : Fragment() {
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.posts)
-            binding.progress.isVisible = state.loading
-            binding.errorGroup.isVisible = state.error
             binding.emptyText.isVisible = state.empty
+
+            viewModel.state.observe(viewLifecycleOwner){state ->
+                binding.progress.isVisible = state.loading
+               if(state.error){
+                   Snackbar.make(binding.root, R.string.error_loading, Snackbar.LENGTH_SHORT)
+                       .setAction(R.string.retry_loading){
+                           viewModel.loadPosts()
+                       }
+                       .show()
+               }
+                binding.refresh.isRefreshing= state.refreshing
+
+            }
+            binding.refresh.setOnRefreshListener {
+                viewModel.loadPosts()
+            }
 
             binding.addNewPost.setOnClickListener {
                 findNavController().navigate(R.id.action_feedFragment_to_newPostFragment)
-            }
-            binding.retryButton.setOnClickListener {
-                viewModel.loadPosts()
             }
 
             viewModel.edited.observe(viewLifecycleOwner) { post ->

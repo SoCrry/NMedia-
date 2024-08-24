@@ -5,8 +5,13 @@ import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.launch
+import ru.netology.nmedia.db.AppDb
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.model.FeedModel
+import ru.netology.nmedia.model.FeedModelState
 import ru.netology.nmedia.repository.PostRepository
 
 import ru.netology.nmedia.repository.PostRepositoryImpl
@@ -28,45 +33,61 @@ private val empty = Post(
 
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository: PostRepository = PostRepositoryImpl()
-    private val _data = MutableLiveData(FeedModel())
-    val data: LiveData<FeedModel>
-        get() = _data
+    private val repository: PostRepository = PostRepositoryImpl(
+        AppDb.getInstance(application).postDao()
+    )
+    private val _state = MutableLiveData(FeedModelState())
+    val data: LiveData<FeedModel> = repository.data.map {
+        FeedModel(posts = it, empty = it.isEmpty())
+    }
+    val  state: LiveData<FeedModelState>
+        get() = _state
     val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
     val postCreated: LiveData<Unit>
         get() = _postCreated
-    val old = _data.value?.posts.orEmpty()
+
 
     init {
         loadPosts()
     }
 
     fun loadPosts() {
-        _data.value = FeedModel(loading = true)
-        repository.getAllAsync(object : PostRepository.NMediaCallback<List<Post>> {
-            override fun onSuccess(posts: List<Post>) {
-                _data.postValue(FeedModel(posts = posts, empty = posts.isEmpty()))
-            }
+        viewModelScope.launch {
+            _state.value = FeedModelState(loading = true)
+            _state.value=try {
+            repository.getAllAsync()
+                FeedModelState()
+            }  catch (e: Exception){
+                FeedModelState(error = true)
 
-            override fun onError(e: Exception) {
-                _data.postValue(FeedModel(error = true))
             }
-        })
+        }
     }
+
+    fun refreshPosts() {
+        viewModelScope.launch {
+            _state.value = FeedModelState(refreshing = true)
+            _state.value=try {
+                repository.getAllAsync()
+                FeedModelState()
+            }  catch (e: Exception){
+                FeedModelState(error = true)
+
+            }
+        }
+    }
+
     fun save() {
-        edited.value?.let {
-            repository.save(it, object  : PostRepository.NMediaCallback<Post>{
-                override fun onSuccess(posts: Post) {
-                    _postCreated.postValue(Unit)
-                }
-                override fun onError(e: Exception) {
-                    _data.postValue(_data.value?.copy(error = true))
-                }
-            })
+        viewModelScope.launch {
+            edited.value?.let {
+                repository.save(it)
+                _postCreated.postValue(Unit)
+            }
         }
         edited.value = empty
     }
+
 
     fun changeContent(content: String) {
         val text = content.trim()
@@ -86,63 +107,46 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun setEmptyPost() {
         edited.value = empty
     }
-    fun sharedById(id: Long) = repository.sharedById(id)
+    suspend fun sharedById(id: Long) = repository.sharedById(id)
 
     fun likeById(id: Long) {
-        repository.likeById(id, object : PostRepository.NMediaCallback<Post> {
-            override fun onError(e: Exception) {
-                _data.postValue(_data.value?.copy(error = true))
-            }
+        viewModelScope.launch {
+            try {
 
-            override fun onSuccess(posts: Post) {
-                _data.postValue(
-                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                        .map {
-                            if (it.id == id) posts else it
-                        }
-                    )
-                )
+                    repository.likeById(id)
+                _state.value = FeedModelState()
+            } catch (e: Exception) {
+                _state.value = FeedModelState(error = true)
             }
-        })
+        }
     }
 
     fun unLikeById(id: Long) {
-        repository.unLikeById(id, object : PostRepository.NMediaCallback<Post> {
-            override fun onError(e: Exception) {
-                _data.postValue(_data.value?.copy(error = true))
-            }
-
-            override fun onSuccess(posts: Post) {
-                _data.postValue(
-                    _data.value?.copy(posts = _data.value?.posts.orEmpty()
-                        .map {
-                            if (it.id == id) posts else it
-                        }
-                    )
-                )
-            }
-        })
+        viewModelScope.launch {
+            try {
+                repository.unLikeById(id)
+                _state.value = FeedModelState()
+            } catch (e: Exception) {
+                _state.value = FeedModelState(error = true)
+        }
+        }
     }
 
     fun removeById(id: Long) {
-        _data.value = _data.value?.copy(posts = _data.value?.posts.orEmpty()
-            .filter { it.id != id }
-        )
-        repository.removeById(id, object : PostRepository.NMediaCallback<Unit> {
-            override fun onSuccess(data: Unit) {
+        viewModelScope.launch {
+            try {
+                repository.removeById(id)
+            } catch (e: Exception) {
+                _state.value = FeedModelState(error = true)
             }
-
-            override fun onError(e: Exception) {
-                _data.postValue(_data.value?.copy(error = true))
-            }
-        })
+        }
     }
 
     fun getVideoUri(post: Post): Uri {
         return Uri.parse(post.urlVideo)
     }
-    fun getAvatarUrl(fileName: String) {
+    /*fun getAvatarUrl(fileName: String) {
         repository.getAvatarUrl(fileName)
-    }
+    }*/
 
 }

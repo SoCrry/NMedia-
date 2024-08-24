@@ -17,7 +17,7 @@ interface OnInteractionListener {
     fun onLike(post: Post) {}
     fun onEdit(post: Post) {}
     fun onRemove(post: Post) {}
-    fun onShare(post: Post) {}
+    suspend fun onShare(post: Post) {}
     fun onPlay(post: Post) {}
     fun onCardPost(post: Post) {}
 
@@ -65,7 +65,7 @@ class PostViewHolder(
                 onInteractionListener.onLike(post)
             }
             share.setOnClickListener {
-                onInteractionListener.onShare(post)
+              /*  onInteractionListener.onShare(post)*/
             }
             previewVideoImage.setOnClickListener {
                 onInteractionListener.onPlay(post)
