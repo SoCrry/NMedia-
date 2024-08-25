@@ -15,7 +15,7 @@ import com.google.gson.Gson
 import ru.netology.nmedia.R
 import kotlin.random.Random
 
-class FCMService: FirebaseMessagingService() {
+class FCMService : FirebaseMessagingService() {
 
     private val action = "action"
     private val content = "content"
@@ -54,18 +54,17 @@ class FCMService: FirebaseMessagingService() {
                         )
                     )
                 }
-            }catch (e: RuntimeException) {
+            } catch (e: RuntimeException) {
                 println("ERROR")
             }
         }
     }
 
 
-
-
     override fun onNewToken(token: String) {
         println(token)
     }
+
     private fun handleLike(content: Like) {
         val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
@@ -81,6 +80,7 @@ class FCMService: FirebaseMessagingService() {
 
         notify(notification)
     }
+
     private fun handleNewPost(content: NewPost) {
         val notification = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.ic_notification)
@@ -91,15 +91,18 @@ class FCMService: FirebaseMessagingService() {
                 )
             )
             .setContentText(
-               content.content
+                content.content
             )
-            .setStyle(NotificationCompat.BigTextStyle()
-                .bigText(content.content))
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(content.content)
+            )
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .build()
 
         notify(notification)
     }
+
     private fun notify(notification: Notification) {
         if (
             Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
@@ -125,6 +128,7 @@ data class Like(
     val postId: Long,
     val postAuthor: String,
 )
+
 data class NewPost(
     val postId: Long,
     val postAuthor: String,

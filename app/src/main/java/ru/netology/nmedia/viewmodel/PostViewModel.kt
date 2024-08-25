@@ -40,7 +40,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     val data: LiveData<FeedModel> = repository.data.map {
         FeedModel(posts = it, empty = it.isEmpty())
     }
-    val  state: LiveData<FeedModelState>
+    val state: LiveData<FeedModelState>
         get() = _state
     val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
@@ -55,10 +55,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun loadPosts() {
         viewModelScope.launch {
             _state.value = FeedModelState(loading = true)
-            _state.value=try {
-            repository.getAllAsync()
+            _state.value = try {
+                repository.getAllAsync()
                 FeedModelState()
-            }  catch (e: Exception){
+            } catch (e: Exception) {
                 FeedModelState(error = true)
 
             }
@@ -68,10 +68,10 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     fun refreshPosts() {
         viewModelScope.launch {
             _state.value = FeedModelState(refreshing = true)
-            _state.value=try {
+            _state.value = try {
                 repository.getAllAsync()
                 FeedModelState()
-            }  catch (e: Exception){
+            } catch (e: Exception) {
                 FeedModelState(error = true)
 
             }
@@ -98,22 +98,23 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun edit(post: Post) {
-       thread{
-           edited.postValue(post)
-       }
+        thread {
+            edited.postValue(post)
+        }
 
     }
 
     fun setEmptyPost() {
         edited.value = empty
     }
+
     suspend fun sharedById(id: Long) = repository.sharedById(id)
 
     fun likeById(id: Long) {
         viewModelScope.launch {
             try {
 
-                    repository.likeById(id)
+                repository.likeById(id)
                 _state.value = FeedModelState()
             } catch (e: Exception) {
                 _state.value = FeedModelState(error = true)
@@ -128,7 +129,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                 _state.value = FeedModelState()
             } catch (e: Exception) {
                 _state.value = FeedModelState(error = true)
-        }
+            }
         }
     }
 

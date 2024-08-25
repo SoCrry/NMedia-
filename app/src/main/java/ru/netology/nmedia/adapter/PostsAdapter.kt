@@ -65,7 +65,7 @@ class PostViewHolder(
                 onInteractionListener.onLike(post)
             }
             share.setOnClickListener {
-              /*  onInteractionListener.onShare(post)*/
+                /*  onInteractionListener.onShare(post)*/
             }
             previewVideoImage.setOnClickListener {
                 onInteractionListener.onPlay(post)

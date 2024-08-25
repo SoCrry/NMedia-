@@ -16,7 +16,6 @@ import java.util.concurrent.TimeUnit
 private const val BASE_URL = "${BuildConfig.BASE_URL}api/"
 
 
-
 private val logging = HttpLoggingInterceptor().apply {
     if (BuildConfig.DEBUG) {
         level = HttpLoggingInterceptor.Level.BODY

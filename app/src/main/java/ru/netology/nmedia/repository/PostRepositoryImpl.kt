@@ -14,25 +14,35 @@ import ru.netology.nmedia.error.NetworkError
 class PostRepositoryImpl(
     private val postDao: PostDao
 ) : PostRepository {
-    override val data: LiveData<List<Post>> = postDao.getAll().map{
+    override val data: LiveData<List<Post>> = postDao.getAll().map {
         it.map(PostEntity::toDto)
     }
 
     override suspend fun sharedById(id: Long) {
         //TODO:
     }
+
     override suspend fun getAvatarUrl(fileName: String): String {
         return "${BASE_URL}/avatars/$fileName"
     }
+
     override suspend fun likeById(id: Long): Post {
         postDao.likeById(id)
-        val response = PostsApi.retrofitService.likeById(id)
-        if (!response.isSuccessful) {
-            throw RuntimeException(response.errorBody()?.string())
+        try {
+            val response = PostsApi.retrofitService.likeById(id)
+            if (!response.isSuccessful) {
+                throw RuntimeException(response.errorBody()?.string())
+            }
+            val post = response.body() ?: throw RuntimeException("body is null")
+            postDao.insert(PostEntity.fromDto(post))
+            return post
+        } catch (e: IOException) {
+            postDao.likeById(id)
+            throw NetworkError
+        } catch (e: Exception) {
+            postDao.likeById(id)
+            throw AppUnknownError
         }
-        val post = response.body() ?: throw RuntimeException("body is null")
-        postDao.insert(PostEntity.fromDto(post))
-        return post
     }
 
     override suspend fun save(post: Post) {
@@ -64,13 +74,21 @@ class PostRepositoryImpl(
 
     override suspend fun unLikeById(id: Long): Post {
         postDao.likeById(id)
-        val response = PostsApi.retrofitService.dislikeById(id)
-        if (!response.isSuccessful) {
-            throw RuntimeException(response.errorBody()?.string())
+        try {
+            val response = PostsApi.retrofitService.dislikeById(id)
+            if (!response.isSuccessful) {
+                throw RuntimeException(response.errorBody()?.string())
+            }
+            val post = response.body() ?: throw RuntimeException("body is null")
+            postDao.insert(PostEntity.fromDto(post))
+            return post
+        } catch (e: IOException) {
+            postDao.likeById(id)
+            throw NetworkError
+        } catch (e: Exception) {
+            postDao.likeById(id)
+            throw AppUnknownError
         }
-        val post = response.body() ?: throw RuntimeException("body is null")
-        postDao.insert(PostEntity.fromDto(post))
-        return post
     }
 
     override suspend fun getAllAsync() {
@@ -81,22 +99,22 @@ class PostRepositoryImpl(
             }
             val posts = response.body() ?: throw RuntimeException("Response body is empty")
             postDao.insert(posts.map(PostEntity::fromDto))
-        }catch (e: IOException){
+        } catch (e: IOException) {
             throw NetworkError
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             throw AppUnknownError
         }
     }
-   /* private val client = OkHttpClient.Builder()
-        .connectTimeout(30, TimeUnit.SECONDS)
-        .build()
-    private val gson = Gson()
-    private val typeToken = object : TypeToken<List<Post>>() {}
+    /* private val client = OkHttpClient.Builder()
+         .connectTimeout(30, TimeUnit.SECONDS)
+         .build()
+     private val gson = Gson()
+     private val typeToken = object : TypeToken<List<Post>>() {}
 
-    companion object {
-        private const val BASE_URL = "http://10.0.2.2:9999"
-        private val jsonType = "application/json".toMediaType()
-    }*/
+     companion object {
+         private const val BASE_URL = "http://10.0.2.2:9999"
+         private val jsonType = "application/json".toMediaType()
+     }*/
 
     /* override fun getAll(): List<Post> {
         val request: Request = Request.Builder()
