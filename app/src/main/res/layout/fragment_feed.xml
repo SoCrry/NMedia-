@@ -7,6 +7,21 @@
     android:layout_height="match_parent"
     android:padding="@dimen/standard_dp"
     tools:context=".activity.FeedFragment">
+
+    <Button
+        android:id="@+id/newPostReload"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/new_posts"
+        android:drawableLeft="@drawable/new_post_reload"
+        android:drawableTint="#FFF"
+        android:visibility="gone"
+        >
+
+    </Button>
+
+
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -50,6 +65,8 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/card_post"
         />
+
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 

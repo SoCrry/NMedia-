@@ -12,4 +12,5 @@ data class Post(
     val visibilityCount: Int = 0,
     val urlVideo: String? = null,
     val authorAvatar: String? = null,
+    val hidden: Boolean = false,
 )

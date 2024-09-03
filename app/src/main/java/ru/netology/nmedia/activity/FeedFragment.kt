@@ -2,6 +2,7 @@ package ru.netology.nmedia.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -82,6 +83,20 @@ class FeedFragment : Fragment() {
         viewModel.data.observe(viewLifecycleOwner) { state ->
             adapter.submitList(state.posts)
             binding.emptyText.isVisible = state.empty
+
+             viewModel.newerCount.observe(viewLifecycleOwner) { state ->
+
+                if (state >= 1) binding.newPostReload.visibility = View.VISIBLE
+
+                println("Newer: $state")
+            }
+
+            binding.newPostReload.setOnClickListener {
+                it.visibility = View.GONE
+               viewModel.showNewPosts()
+                binding.list.smoothScrollToPosition(0)
+            }
+
 
             viewModel.state.observe(viewLifecycleOwner) { state ->
                 binding.progress.isVisible = state.loading

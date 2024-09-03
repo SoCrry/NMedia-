@@ -15,4 +15,5 @@
     <string name="empty_posts">Посты отсутствуют</string>
     <string name="retry_loading">Повторить загрузку</string>
     <string name="error_loading">Ошибка загрузки</string>
+    <string name="new_posts">Новые записи</string>
 </resources>

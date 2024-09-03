@@ -1,21 +1,51 @@
 package ru.netology.nmedia.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.map
+
+
+
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import okio.IOException
 import ru.netology.nmedia.BuildConfig.BASE_URL
 import ru.netology.nmedia.api.PostsApi
 import ru.netology.nmedia.dao.PostDao
 import ru.netology.nmedia.dto.Post
 import ru.netology.nmedia.entity.PostEntity
+import ru.netology.nmedia.entity.toEntity
 import ru.netology.nmedia.error.AppUnknownError
 import ru.netology.nmedia.error.NetworkError
+import kotlin.coroutines.cancellation.CancellationException
+
+
+import kotlin.time.Duration.Companion.seconds
 
 class PostRepositoryImpl(
     private val postDao: PostDao
 ) : PostRepository {
-    override val data: LiveData<List<Post>> = postDao.getAll().map {
+    override val data: Flow<List<Post>> = postDao.getAll().map{
         it.map(PostEntity::toDto)
+    }
+
+
+    override fun getNewerCount(newerId: Long): Flow<Int> = flow  {
+while (true){
+    delay(10.seconds)
+    try {
+        val  postsResponse = PostsApi.retrofitService.getNewer(newerId)
+        val posts = postsResponse.body().orEmpty()
+        emit(posts.size)
+        postDao.insert(posts.toEntity(hidden = true))
+    }catch (e: CancellationException){
+throw e
+    }catch (e: Exception){
+        //ignore
+    }
+}
+    }
+    override suspend fun viewNewPost() {
+        postDao.viewNewPost()
     }
 
     override suspend fun sharedById(id: Long) {

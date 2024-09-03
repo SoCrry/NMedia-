@@ -14,4 +14,5 @@
     <string name="empty_posts">posts is empty</string>
     <string name="retry_loading">repeat the download</string>
     <string name="error_loading">erroe loading</string>
+    <string name="new_posts">new posts </string>
 </resources>
