@@ -16,4 +16,6 @@
     <string name="retry_loading">Повторить загрузку</string>
     <string name="error_loading">Ошибка загрузки</string>
     <string name="new_posts">Новые записи</string>
+    <string name="menu_save">Сохранить</string>
+    <string name="remove">Удалить</string>
 </resources>

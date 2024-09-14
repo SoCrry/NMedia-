@@ -15,4 +15,6 @@
     <string name="retry_loading">repeat the download</string>
     <string name="error_loading">erroe loading</string>
     <string name="new_posts">new posts </string>
+    <string name="menu_save">Save</string>
+    <string name="remove">Remove</string>
 </resources>

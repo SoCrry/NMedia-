@@ -17,6 +17,7 @@ import ru.netology.nmedia.activity.NewPostFragment.Companion.textArg
 import ru.netology.nmedia.adapter.OnInteractionListener
 import ru.netology.nmedia.adapter.PostsAdapter
 import ru.netology.nmedia.databinding.FragmentFeedBinding
+import ru.netology.nmedia.util.StringArg
 import ru.netology.nmedia.viewmodel.PostViewModel
 
 class FeedFragment : Fragment() {
@@ -24,6 +25,9 @@ class FeedFragment : Fragment() {
     private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
+    companion object {
+        var Bundle.urlArg: String? by StringArg
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,6 +45,12 @@ class FeedFragment : Fragment() {
                 viewModel.edit(post)
 
             }
+
+            override fun photoView(post: Post) {
+                findNavController().navigate(R.id.action_feedFragment_to_PhotoView,
+                    Bundle().apply { urlArg = post.attachment?.url })
+            }
+
 
             override fun onLike(post: Post) {
                 if (!post.likedByMe) viewModel.likeById(post.id) else viewModel.unLikeById(post.id)
@@ -69,15 +79,19 @@ class FeedFragment : Fragment() {
                 }
                 startActivity(Intent.createChooser(intent, "video"))
             }
-
-            /*override fun onCardPost(post: Post) {
+            override fun onImageClick(imageUrl: String) {
                 findNavController().navigate(
-                    R.id.action_feedFragment_to_postFragment,
-                    Bundle().also { it.idArg = post.id }
+                    R.id.action_feedFragment_to_PhotoView,
+                    Bundle().apply {
+                        putString("imageUrl", imageUrl)
+                    }
                 )
-            }*/
+            }
 
         })
+        { imageUrl ->
+            onImageClick(imageUrl)
+        }
         binding.list.adapter = adapter
 
         viewModel.data.observe(viewLifecycleOwner) { state ->
@@ -131,6 +145,14 @@ class FeedFragment : Fragment() {
         }
 
         return binding.root
+    }
+    private fun onImageClick(url: String) {
+        findNavController().navigate(
+            R.id.action_feedFragment_to_PhotoView,
+            Bundle().apply {
+                putString("imageUrl", url)
+            }
+        )
     }
 }
 
