@@ -27,6 +27,14 @@
         android:name="ru.netology.nmedia.activity.NewPostFragment"
         android:label="PhotoView"
         tools:layout="@layout/fragment_photo_view"/>
-
+<fragment
+    android:id="@+id/loginAndPassword"
+    android:name="ru.netology.nmedia.activity.LoginAndPasswordFragment"
+    android:label="Login and Password"
+    tools:layout="@layout/login_and_password"/>
+    <action
+        android:id="@+id/action_appActivity_to_loginAndPasswordFragment"
+        app:destination="@id/loginAndPassword"/>
+        />
 
 </navigation>

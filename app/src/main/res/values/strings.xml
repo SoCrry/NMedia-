@@ -17,4 +17,7 @@
     <string name="new_posts">new posts </string>
     <string name="menu_save">Save</string>
     <string name="remove">Remove</string>
+    <string name="sing_in">Sing in</string>
+    <string name="sing_up">Sing up</string>
+    <string name="logout">Logout</string>
 </resources>

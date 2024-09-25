@@ -18,4 +18,7 @@
     <string name="new_posts">Новые записи</string>
     <string name="menu_save">Сохранить</string>
     <string name="remove">Удалить</string>
+    <string name="sing_in">Войти</string>
+    <string name="sing_up">Зарегестрироваться</string>
+    <string name="logout">Выйти</string>
 </resources>

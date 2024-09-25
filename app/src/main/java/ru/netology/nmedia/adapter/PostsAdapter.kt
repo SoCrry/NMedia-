@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -68,6 +69,9 @@ class PostViewHolder(
             share.text = NumberServices().countWithSuffix(post.shared)
             viewers.text = NumberServices().countWithSuffix(post.views)
             like.isChecked = post.likedByMe
+
+            menu.isVisible = post.ownedByMe
+
             if (post.authorAvatar != null) {
                 avatar.loadAvatar(post.authorAvatar)
             }

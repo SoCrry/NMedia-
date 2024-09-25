@@ -12,6 +12,7 @@ data class PostEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long,
     val author: String,
+    val authorId: Long,
     val content: String,
     val published: String,
     val likedByMe: Boolean,
@@ -24,40 +25,43 @@ data class PostEntity(
     val hidden: Boolean = false,
     @Embedded
     var attachment: AttachmentEmbeddable?,
+
 ) {
     fun toDto() = Post(
-        id,
-        author,
-        content,
-        published,
-        likedByMe,
-        likes,
-        shared,
-        views,
-        visibilityCount,
-        urlVideo,
-        authorAvatar,
-        hidden,
-        attachment?.toDto(),
+        id = id,
+        author = author,
+        content = content,
+        published = published,
+        likedByMe = likedByMe,
+        likes = likes,
+        shared = shared,
+        views = views,
+        visibilityCount = visibilityCount,
+        urlVideo = urlVideo,
+        authorAvatar = authorAvatar,
+        hidden = hidden,
+        attachment = attachment?.toDto(),
+        authorId =authorId,
 
     )
 
     companion object {
         fun fromDto(dto: Post,hidden: Boolean = false) =
             PostEntity(
-                dto.id,
-                dto.author,
-                dto.content,
-                dto.published,
-                dto.likedByMe,
-                dto.likes,
-                dto.shared,
-                dto.views,
-                dto.visibilityCount,
-                dto.urlVideo,
-                dto.authorAvatar,
-                hidden,
-                AttachmentEmbeddable.fromDto(dto.attachment)
+                id = dto.id,
+                author = dto.author,
+                content = dto.content,
+                published = dto.published,
+                likedByMe = dto.likedByMe,
+                likes = dto.likes,
+                shared = dto.shared,
+                views = dto.views,
+                visibilityCount = dto.visibilityCount,
+                urlVideo = dto.urlVideo,
+                authorAvatar = dto.authorAvatar,
+                hidden = hidden,
+                attachment = AttachmentEmbeddable.fromDto(dto.attachment),
+                authorId = dto.authorId
 
             )
 
