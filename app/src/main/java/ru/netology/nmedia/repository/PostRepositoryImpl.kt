@@ -1,8 +1,6 @@
 package ru.netology.nmedia.repository
 
 
-
-
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -34,7 +32,7 @@ import kotlin.time.Duration.Companion.seconds
 class PostRepositoryImpl(
     private val postDao: PostDao
 ) : PostRepository {
-    override val data: Flow<List<Post>> = postDao.getAll().map{
+    override val data: Flow<List<Post>> = postDao.getAll().map {
         it.map(PostEntity::toDto)
     }
 
@@ -49,6 +47,7 @@ class PostRepositoryImpl(
         val postWithAttachment = post.copy(attachment = Attachment(media.id, AttachmentType.IMAGE))
         save(postWithAttachment)
     }
+
     override suspend fun upload(upload: MediaUpload): Media {
         val file = upload.file ?: throw IllegalArgumentException("Photo file is missing")
         val response = PostsApi.retrofitService.upload(
@@ -61,21 +60,22 @@ class PostRepositoryImpl(
     }
 
 
-    override fun getNewerCount(newerId: Long): Flow<Int> = flow  {
-while (true){
-    delay(10.seconds)
-    try {
-        val  postsResponse = PostsApi.retrofitService.getNewer(newerId)
-        val posts = postsResponse.body().orEmpty()
-        emit(posts.size)
-        postDao.insert(posts.toEntity(hidden = true))
-    }catch (e: CancellationException){
-throw e
-    }catch (e: Exception){
-        //ignore
+    override fun getNewerCount(newerId: Long): Flow<Int> = flow {
+        while (true) {
+            delay(10.seconds)
+            try {
+                val postsResponse = PostsApi.retrofitService.getNewer(newerId)
+                val posts = postsResponse.body().orEmpty()
+                emit(posts.size)
+                postDao.insert(posts.toEntity(hidden = true))
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                //ignore
+            }
+        }
     }
-}
-    }
+
     override suspend fun viewNewPost() {
         postDao.viewNewPost()
     }

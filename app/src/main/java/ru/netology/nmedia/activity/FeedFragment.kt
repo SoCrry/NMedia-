@@ -25,6 +25,7 @@ class FeedFragment : Fragment() {
     private val viewModel: PostViewModel by viewModels(
         ownerProducer = ::requireParentFragment
     )
+
     companion object {
         var Bundle.urlArg: String? by StringArg
     }
@@ -79,6 +80,7 @@ class FeedFragment : Fragment() {
                 }
                 startActivity(Intent.createChooser(intent, "video"))
             }
+
             override fun onImageClick(imageUrl: String) {
                 findNavController().navigate(
                     R.id.action_feedFragment_to_PhotoView,
@@ -98,7 +100,7 @@ class FeedFragment : Fragment() {
             adapter.submitList(state.posts)
             binding.emptyText.isVisible = state.empty
 
-             viewModel.newerCount.observe(viewLifecycleOwner) { state ->
+            viewModel.newerCount.observe(viewLifecycleOwner) { state ->
 
                 if (state >= 1) binding.newPostReload.visibility = View.VISIBLE
 
@@ -107,7 +109,7 @@ class FeedFragment : Fragment() {
 
             binding.newPostReload.setOnClickListener {
                 it.visibility = View.GONE
-               viewModel.showNewPosts()
+                viewModel.showNewPosts()
                 binding.list.smoothScrollToPosition(0)
             }
 
@@ -146,6 +148,7 @@ class FeedFragment : Fragment() {
 
         return binding.root
     }
+
     private fun onImageClick(url: String) {
         findNavController().navigate(
             R.id.action_feedFragment_to_PhotoView,

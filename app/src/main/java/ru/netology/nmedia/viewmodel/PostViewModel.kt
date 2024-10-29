@@ -40,6 +40,7 @@ private val empty = Post(
 )
 
 private val noPhoto = PhotoModel()
+
 class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val repository: PostRepository = PostRepositoryImpl(
         AppDb.getInstance(application).postDao()
@@ -65,7 +66,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
     val state: LiveData<FeedModelState>
         get() = _state
     val newerCount: LiveData<Int> = data.switchMap {
-        repository.getNewerCount(it.posts.firstOrNull()?.id ?:0L).asLiveData(Dispatchers.Default)
+        repository.getNewerCount(it.posts.firstOrNull()?.id ?: 0L).asLiveData(Dispatchers.Default)
     }
     val edited = MutableLiveData(empty)
     private val _postCreated = SingleLiveEvent<Unit>()
@@ -106,6 +107,7 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
     fun showNewPosts() = viewModelScope.launch {
         try {
             _state.value = FeedModelState(loading = true)
@@ -115,12 +117,13 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
             _state.value = FeedModelState(error = true)
         }
     }
+
     fun save() {
         edited.value?.let {
             _postCreated.value = Unit
             viewModelScope.launch {
                 try {
-                    when(_photo.value) {
+                    when (_photo.value) {
                         noPhoto -> repository.save(it)
                         else -> _photo.value?.file?.let { file ->
                             repository.saveWithAttachment(it, MediaUpload(file))

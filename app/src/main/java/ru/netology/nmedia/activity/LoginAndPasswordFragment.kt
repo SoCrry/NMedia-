@@ -23,6 +23,7 @@ class LoginAndPasswordFragment : Fragment() {
         val userRepository = UserRepository(apiService)
         LoginViewModelFactory(userRepository)
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -1,6 +1,5 @@
 package ru.netology.nmedia.dto
 
-class Token(
-    val id: Long,
+data class PushToken(
     val token: String,
 )

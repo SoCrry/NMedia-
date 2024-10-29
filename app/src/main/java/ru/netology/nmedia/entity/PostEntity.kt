@@ -26,7 +26,7 @@ data class PostEntity(
     @Embedded
     var attachment: AttachmentEmbeddable?,
 
-) {
+    ) {
     fun toDto() = Post(
         id = id,
         author = author,
@@ -41,12 +41,12 @@ data class PostEntity(
         authorAvatar = authorAvatar,
         hidden = hidden,
         attachment = attachment?.toDto(),
-        authorId =authorId,
+        authorId = authorId,
 
-    )
+        )
 
     companion object {
-        fun fromDto(dto: Post,hidden: Boolean = false) =
+        fun fromDto(dto: Post, hidden: Boolean = false) =
             PostEntity(
                 id = dto.id,
                 author = dto.author,
@@ -67,6 +67,7 @@ data class PostEntity(
 
     }
 }
+
 data class AttachmentEmbeddable(
     var url: String,
     var type: AttachmentType,
@@ -81,4 +82,5 @@ data class AttachmentEmbeddable(
 }
 
 fun List<PostEntity>.toDto(): List<Post> = map(PostEntity::toDto)
-fun List<Post>.toEntity(hidden: Boolean = false): List<PostEntity> = map { PostEntity.fromDto(it, hidden) }
+fun List<Post>.toEntity(hidden: Boolean = false): List<PostEntity> =
+    map { PostEntity.fromDto(it, hidden) }

@@ -10,27 +10,27 @@ import com.bumptech.glide.Glide
 import ru.netology.nmedia.databinding.FragmentPhotoViewBinding
 
 
-    class PhotoView : Fragment() {
+class PhotoView : Fragment() {
 
-        override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
-        ): View? {
-            val binding = FragmentPhotoViewBinding.inflate(inflater, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding = FragmentPhotoViewBinding.inflate(inflater, container, false)
 
-            val imageUrl = arguments?.getString("imageUrl")
+        val imageUrl = arguments?.getString("imageUrl")
 
 
-            binding.cancel.setOnClickListener {
-                findNavController().navigateUp()
-            }
-
-            imageUrl?.let {
-                Glide.with(this)
-                    .load(it)
-                    .into(binding.fullScreenImageView)
-            }
-
-            return binding.root
+        binding.cancel.setOnClickListener {
+            findNavController().navigateUp()
         }
+
+        imageUrl?.let {
+            Glide.with(this)
+                .load(it)
+                .into(binding.fullScreenImageView)
+        }
+
+        return binding.root
     }
+}

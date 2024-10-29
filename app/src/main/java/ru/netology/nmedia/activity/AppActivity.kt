@@ -51,42 +51,43 @@ class AppActivity : AppCompatActivity(R.layout.activity_app) {
             invalidateOptionsMenu()
         }
 
-    val viewModel by viewModels<AuthViewModel>()
-    addMenuProvider(
-    object : MenuProvider {
-        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-            menuInflater.inflate(R.menu.auth_menu, menu)
-            viewModel.authData.observe(this@AppActivity) {
-                val isAuthenticated = viewModel.isAuthenticated
+        val viewModel by viewModels<AuthViewModel>()
+        addMenuProvider(
+            object : MenuProvider {
+                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                    menuInflater.inflate(R.menu.auth_menu, menu)
+                    viewModel.authData.observe(this@AppActivity) {
+                        val isAuthenticated = viewModel.isAuthenticated
 
-                menu.setGroupVisible(R.id.authenticated, !isAuthenticated)
-                menu.setGroupVisible(R.id.unauthenticated, isAuthenticated)
+                        menu.setGroupVisible(R.id.authenticated, !isAuthenticated)
+                        menu.setGroupVisible(R.id.unauthenticated, isAuthenticated)
 
-            }
-        }
-
-        override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
-            when (menuItem.itemId) {
-                R.id.sing_in -> {
-                    findNavController(R.id.nav_host_fragment)
-                        .navigate(R.id.action_appActivity_to_loginAndPasswordFragment)
-                    AppAuth.getInstance().setAuth(5, "x-token")
-                    true
+                    }
                 }
 
-                R.id.sing_up -> {
-                    true
-                }
+                override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+                    when (menuItem.itemId) {
+                        R.id.sing_in -> {
+                            findNavController(R.id.nav_host_fragment)
+                                .navigate(R.id.action_appActivity_to_loginAndPasswordFragment)
+                            AppAuth.getInstance().setAuth(5, "x-token")
+                            true
+                        }
 
-                R.id.logout -> {
-                    AppAuth.getInstance().clearAuth()
-                    true
-                }
+                        R.id.sing_up -> {
+                            true
+                        }
 
-                else -> false
-            }
-    })
+                        R.id.logout -> {
+                            AppAuth.getInstance().clearAuth()
+                            true
+                        }
+
+                        else -> false
+                    }
+            })
     }
+
     private fun requestNotificationsPermission() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             return

@@ -14,6 +14,5 @@ fun ImageView.load(url: String, vararg transforms: BitmapTransformation = emptyA
         .into(this)
 
 
-
 fun ImageView.loadCircleCrop(url: String, vararg transforms: BitmapTransformation = emptyArray()) =
     load(url, CircleCrop(), *transforms)

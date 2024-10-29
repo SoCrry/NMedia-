@@ -14,6 +14,7 @@ import ru.netology.nmedia.auth.AppAuth
 import ru.netology.nmedia.dto.Media
 
 import ru.netology.nmedia.dto.Post
+import ru.netology.nmedia.dto.PushToken
 import ru.netology.nmedia.dto.Token
 import java.util.concurrent.TimeUnit
 
@@ -51,6 +52,7 @@ interface PostsApiService {
 
     @GET("posts/{id}")
     suspend fun getById(@Path("id") id: Long): Response<Post>
+
     @GET("posts/{id}/newer")
     suspend fun getNewer(@Path("id") id: Long): Response<List<Post>>
 
@@ -65,13 +67,20 @@ interface PostsApiService {
 
     @DELETE("posts/{id}/likes")
     suspend fun dislikeById(@Path("id") id: Long): Response<Post>
+
     @Multipart
     @POST("media")
     suspend fun upload(@Part media: MultipartBody.Part): Response<Media>
 
     @FormUrlEncoded
     @POST("users/authentication")
-    suspend fun authenticate(@Field("login") login: String, @Field("pass") password: String): Response<Token>
+    suspend fun authenticate(
+        @Field("login") login: String,
+        @Field("pass") password: String
+    ): Response<Token>
+
+    @POST("users/push-token")
+    suspend fun sendPushToken(@Body token: PushToken)
 }
 
 object PostsApi {

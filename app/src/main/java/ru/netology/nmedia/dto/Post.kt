@@ -20,7 +20,9 @@ data class Post(
     val ownedByMe: Boolean = false,
 
 
-)
+    )
+
+
 data class Attachment(
     val url: String,
     val type: AttachmentType,

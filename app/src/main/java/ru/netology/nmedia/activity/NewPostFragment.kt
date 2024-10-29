@@ -109,84 +109,84 @@ class NewPostFragment : Fragment() {
                 }
         }
 
-            binding.removePhoto.setOnClickListener {
-                viewModel.changePhoto(null, null)
-            }
-            arguments?.textArg
-                ?.let {
-                    val text = it
-                    binding.content.setText(text)
-                }
-
-            binding.save.setOnClickListener {
-                viewModel.changeContent(binding.content.text.toString())
-                viewModel.save()
-                viewModel.setEmptyPost()
-                AndroidUtils.hideKeyboard(requireView())
-            }
-            viewModel.postCreated.observe(viewLifecycleOwner) {
-                viewModel.loadPosts()
-                findNavController().navigateUp()
-            }
-            viewModel.photo.observe(viewLifecycleOwner) {
-                if (it.uri != null) {
-                    binding.photo.setImageURI(it.uri)
-                    binding.photoContainer.isVisible = true
-                } else {
-                    binding.photoContainer.isGone = true
-                }
-
-            }
-            binding.cancel.setOnClickListener()
-            {
-                viewModel.setEmptyPost()
-                findNavController().navigateUp()
-            }
-            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner)
-            {
-                viewModel.setEmptyPost()
-                findNavController().navigateUp()
+        binding.removePhoto.setOnClickListener {
+            viewModel.changePhoto(null, null)
+        }
+        arguments?.textArg
+            ?.let {
+                val text = it
+                binding.content.setText(text)
             }
 
-            requireActivity().addMenuProvider(object : MenuProvider {
-                override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-                    menuInflater.inflate(R.menu.menu_new_post, menu)
-                }
+        binding.save.setOnClickListener {
+            viewModel.changeContent(binding.content.text.toString())
+            viewModel.save()
+            viewModel.setEmptyPost()
+            AndroidUtils.hideKeyboard(requireView())
+        }
+        viewModel.postCreated.observe(viewLifecycleOwner) {
+            viewModel.loadPosts()
+            findNavController().navigateUp()
+        }
+        viewModel.photo.observe(viewLifecycleOwner) {
+            if (it.uri != null) {
+                binding.photo.setImageURI(it.uri)
+                binding.photoContainer.isVisible = true
+            } else {
+                binding.photoContainer.isGone = true
+            }
 
-                override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
-                    when (menuItem.itemId) {
-                        R.id.save -> {
-                            fragmentBinding?.let {
-                                viewModel.changeContent(it.content.text.toString())
-                                viewModel.save()
-                                AndroidUtils.hideKeyboard(requireView())
-                            }
-                            true
+        }
+        binding.cancel.setOnClickListener()
+        {
+            viewModel.setEmptyPost()
+            findNavController().navigateUp()
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner)
+        {
+            viewModel.setEmptyPost()
+            findNavController().navigateUp()
+        }
+
+        requireActivity().addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.menu_new_post, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean =
+                when (menuItem.itemId) {
+                    R.id.save -> {
+                        fragmentBinding?.let {
+                            viewModel.changeContent(it.content.text.toString())
+                            viewModel.save()
+                            AndroidUtils.hideKeyboard(requireView())
                         }
-
-                        else -> false
+                        true
                     }
 
-            }, viewLifecycleOwner)
+                    else -> false
+                }
 
-            return binding.root
-        }
+        }, viewLifecycleOwner)
 
-        override fun onDestroyView() {
-            fragmentBinding = null
-            super.onDestroyView()
-        }
+        return binding.root
     }
 
-    object NewPostContract : ActivityResultContract<String?, String?>() {
-        override fun createIntent(context: Context, input: String?) =
-            Intent(context, NewPostFragment::class.java).putExtra(
-                EXTRA_TEXT, input
-            )
-
-        override fun parseResult(resultCode: Int, intent: Intent?) =
-            intent?.getStringExtra(Intent.EXTRA_TEXT)
+    override fun onDestroyView() {
+        fragmentBinding = null
+        super.onDestroyView()
     }
+}
+
+object NewPostContract : ActivityResultContract<String?, String?>() {
+    override fun createIntent(context: Context, input: String?) =
+        Intent(context, NewPostFragment::class.java).putExtra(
+            EXTRA_TEXT, input
+        )
+
+    override fun parseResult(resultCode: Int, intent: Intent?) =
+        intent?.getStringExtra(Intent.EXTRA_TEXT)
+}
 
 
 
